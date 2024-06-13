@@ -8,8 +8,7 @@ export default function HomeScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <Text style={styles.title}>Paw Trails</Text>
-        <Image source={require('../assets/pawprint.png')} style={styles.image} />
+        <Image source={require('../assets/logo_PT.png')} style={styles.image} />
       </View>
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Profile')}>
         <Text style={styles.buttonText}>Profile</Text>
@@ -21,9 +20,10 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#add8e6', // Light blue background
+    backgroundColor: '#ccb7a4', // Light brown background
     alignItems: 'center',
     justifyContent: 'center',
+    paddingHorizontal: 20,
   },
   content: {
     flex: 1,
@@ -38,13 +38,14 @@ const styles = StyleSheet.create({
     color: '#1D2E57',
     marginBottom: 20,
   },
-  image: {
-    width: 100,
-    height: 100,
+  logo: {
+    width: '80%',
+    height: undefined,
+    aspectRatio: 1,
     marginBottom: 20,
   },
   button: {
-    backgroundColor: '#6495ED',
+    backgroundColor: '#623b1d',
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 5,
