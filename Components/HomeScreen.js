@@ -18,7 +18,6 @@ export default function HomeScreen() {
   );
 }
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -32,8 +31,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    fontSize: 32,
+    fontSize: 48,
     fontWeight: 'bold',
+    fontStyle: 'italic',
+    textAlign: 'center',
+    color: '#1D2E57',
     marginBottom: 20,
   },
   image: {
