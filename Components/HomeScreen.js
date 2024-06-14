@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 export default function HomeScreen() {
@@ -10,9 +10,9 @@ export default function HomeScreen() {
       <View style={styles.content}>
         <Image source={require('../assets/logo_PT.png')} style={styles.image} />
       </View>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Profile')}>
+      <Pressable style={styles.button} onPress={() => navigation.navigate('Profile')}>
         <Text style={styles.buttonText}>Profile</Text>
-      </TouchableOpacity>
+      </Pressable>  
     </View>
   );
 }

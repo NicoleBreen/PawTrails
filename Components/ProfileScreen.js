@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 export default function ProfileScreen() {
@@ -13,9 +13,9 @@ export default function ProfileScreen() {
         <Text style={styles.subtitle}>User Name</Text>
         <Text style={styles.info}>Email: user@example.com</Text>
       </View>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Home')}>
+      <Pressable style={styles.button} onPress={() => navigation.navigate('Home')}>
         <Text style={styles.buttonText}>Home</Text>
-      </TouchableOpacity>
+      </Pressable>  
     </View>
   );
 }
