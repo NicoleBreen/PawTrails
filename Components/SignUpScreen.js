@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Pressable, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Image, Pressable, TextInput, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+// Ensures that the view is responsive and adjusts its size based on the device's screen width
 const screenWidth = Dimensions.get('window').width;
 
 export default function SignUpScreen() {
@@ -11,14 +12,15 @@ export default function SignUpScreen() {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleSignUp = () => {
-    // Add your sign-up logic here
+    // Add sign-up logic here
     navigation.navigate('Profile');
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <Text style={styles.title}>Sign Up</Text>
+        <Image source={require('../assets/logo_PT.png')} style={styles.image} resizeMode="contain" />
+        <Text style={styles.title}>Sign Up!</Text>
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
@@ -64,7 +66,7 @@ export default function SignUpScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ccb7a4',
+    backgroundColor: '#ccb7a4', // Light brown background
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 20,
@@ -72,14 +74,20 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start', 
     width: '100%',
-    maxWidth: 400,
+    maxWidth: 400, 
+    marginTop: 20, // Added some margin to move content up
+  },
+  image: {
+    width: screenWidth * 0.8, 
+    height: screenWidth * 0.8, 
+    marginBottom: 20,
   },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 10,
   },
   inputContainer: {
     width: '100%',
@@ -101,7 +109,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 10,
     alignItems: 'center',
-    width: '100%',
+    width: '100%', 
   },
   buttonText: {
     fontSize: 18,
@@ -110,7 +118,7 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     position: 'absolute',
-    bottom: 20,
+    bottom: 20, 
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',

@@ -9,7 +9,7 @@ export default function ProfileScreen() {
     <View style={styles.container}>
       <View style={styles.content}>
         <Text style={styles.title}>Profile</Text>
-        <Image source={require('../assets/profile-pic.png')} style={styles.profileImage} />
+        <Image source={require('../assets/profile_pic.png')} style={styles.profileImage} />
         <Text style={styles.subtitle}>User Name</Text>
         <Text style={styles.info}>Email: user@example.com</Text>
       </View>
@@ -34,8 +34,8 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   title: {
-    fontSize: 32, // Bigger text size
-    fontWeight: 'bold', // Making the text bold
+    fontSize: 32, 
+    fontWeight: 'bold', 
     marginBottom: 20,
   },
   profileImage: {

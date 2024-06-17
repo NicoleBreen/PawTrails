@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, Pressable, TextInput, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+// Ensures that the view is responsive and adjusts its size based on the device's screen width
 const screenWidth = Dimensions.get('window').width;
 
 export default function LoginScreen() {
@@ -64,11 +65,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
-    maxWidth: 400, // Limit content to a reasonable width
+    maxWidth: 400, 
   },
   image: {
-    width: screenWidth * 0.8, // 80% of the screen width
-    height: screenWidth * 0.8, // Set height to maintain aspect ratio
+    width: screenWidth * 0.8, 
+    height: screenWidth * 0.8, 
     marginBottom: 20,
   },
   inputContainer: {
@@ -91,7 +92,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 10,
     alignItems: 'center',
-    width: '100%', // Full width
+    width: '100%', 
   },
   buttonText: {
     fontSize: 18,
@@ -100,7 +101,7 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     position: 'absolute',
-    bottom: 20, // position it above the bottom padding
+    bottom: 20, // 
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
