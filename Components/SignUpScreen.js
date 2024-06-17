@@ -1,22 +1,24 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, Pressable, TextInput, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Pressable, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const screenWidth = Dimensions.get('window').width;
 
-export default function LoginScreen() {
+export default function SignUpScreen() {
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleLogin = () => {
+  const handleSignUp = () => {
+    // Add your sign-up logic here
     navigation.navigate('Profile');
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <Image source={require('../assets/logo_PT.png')} style={styles.image} resizeMode="contain" />
+        <Text style={styles.title}>Sign Up</Text>
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
@@ -34,27 +36,35 @@ export default function LoginScreen() {
             secureTextEntry
             autoCapitalize="none"
           />
+          <TextInput
+            style={styles.input}
+            placeholder="Confirm Password"
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            secureTextEntry
+            autoCapitalize="none"
+          />
         </View>
       </View>
       <View style={styles.bottomContainer}>
-        <Pressable style={styles.button} onPress={handleLogin}>
-          <Text style={styles.buttonText}>Login</Text>
-        </Pressable>  
-        <Text style={styles.signUpText}>
-          Don't have an account?{' '}
-          <Text style={styles.signUpLink} onPress={() => navigation.navigate('SignUp')}>
-            Sign up!
+        <Pressable style={styles.button} onPress={handleSignUp}>
+          <Text style={styles.buttonText}>Sign Up</Text>
+        </Pressable>
+        <Text style={styles.signInText}>
+          Already have an account?{' '}
+          <Text style={styles.signInLink} onPress={() => navigation.navigate('Home')}>
+            Sign in!
           </Text>
         </Text>
       </View>
     </View>
   );
-}  
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ccb7a4', // Light brown background
+    backgroundColor: '#ccb7a4',
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 20,
@@ -64,11 +74,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
-    maxWidth: 400, // Limit content to a reasonable width
+    maxWidth: 400,
   },
-  image: {
-    width: screenWidth * 0.8, // 80% of the screen width
-    height: screenWidth * 0.8, // Set height to maintain aspect ratio
+  title: {
+    fontSize: 32,
+    fontWeight: 'bold',
     marginBottom: 20,
   },
   inputContainer: {
@@ -91,7 +101,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 10,
     alignItems: 'center',
-    width: '100%', // Full width
+    width: '100%',
   },
   buttonText: {
     fontSize: 18,
@@ -100,17 +110,17 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     position: 'absolute',
-    bottom: 20, // position it above the bottom padding
+    bottom: 20,
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  signUpText: {
+  signInText: {
     fontSize: 16,
     color: '#1D2E57',
     marginBottom: 20,
   },
-  signUpLink: {
+  signInLink: {
     color: '#1D2E57',
     fontWeight: 'bold',
   },
