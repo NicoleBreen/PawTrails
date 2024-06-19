@@ -32,8 +32,8 @@ function MainTabNavigator() {
         tabBarInactiveTintColor: 'gray',
       })}
     >
-      <Tab.Screen name="Profile" component={ProfileScreen} />
-      <Tab.Screen name="EditProfile" component={EditProfileScreen} />
+      <Tab.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
+      <Tab.Screen name="EditProfile" component={EditProfileScreen} options={{ headerShown: false }} />
     </Tab.Navigator>
   );
 }
