@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { StyleSheet, Text, View, Image, Pressable, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { ProfileContext } from './ProfileContext';
+import logo from '../assets/logo_long.png'; // Adjust the path as necessary
 
 export default function ProfileScreen() {
   const navigation = useNavigation();
@@ -10,8 +11,8 @@ export default function ProfileScreen() {
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
       <View style={styles.container}>
+        <Image source={logo} style={styles.logo} />
         <View style={styles.content}>
-          <Text style={styles.title}>Profile</Text>
           <View style={styles.centeredContent}>
             <Image source={profile.profileImage} style={styles.profileImage} />
             <Text style={styles.subtitle}>{profile.userName}</Text>
@@ -60,6 +61,12 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
+  logo: {
+    width: 200, // Adjust width as per your design
+    height: 50, // Adjust height as per your design
+    resizeMode: 'contain',
+    marginBottom: 20,
+  },
   content: {
     width: '100%',
     alignItems: 'center',
@@ -68,12 +75,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     marginBottom: 20,
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
   },
   profileImage: {
     width: 100,
