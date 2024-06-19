@@ -11,7 +11,8 @@ export default function LoginScreen() {
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    navigation.navigate('Profile');
+    // Navigate to the 'Profile' screen within the 'MainTabs' navigator
+    navigation.navigate('MainTabs', { screen: 'Profile' });
   };
 
   return (

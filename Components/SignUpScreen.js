@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, Pressable, TextInput, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Image, Pressable, TextInput, Dimensions, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 // Ensures that the view is responsive and adjusts its size based on the device's screen width
@@ -12,8 +12,18 @@ export default function SignUpScreen() {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleSignUp = () => {
-    // Add sign-up logic here
-    navigation.navigate('Profile');
+    // Add sign-up logic here (e.g., API call to register the user)
+    if (password === confirmPassword) {
+      // Simulate a successful sign-up
+      Alert.alert('Success', 'You have successfully signed up!', [
+        {
+          text: 'OK',
+          onPress: () => navigation.navigate('Login'),
+        },
+      ]);
+    } else {
+      Alert.alert('Error', 'Passwords do not match');
+    }
   };
 
   return (
@@ -54,7 +64,7 @@ export default function SignUpScreen() {
         </Pressable>
         <Text style={styles.signInText}>
           Already have an account?{' '}
-          <Text style={styles.signInLink} onPress={() => navigation.navigate('Home')}>
+          <Text style={styles.signInLink} onPress={() => navigation.navigate('Login')}>
             Sign in!
           </Text>
         </Text>

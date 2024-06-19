@@ -1,11 +1,10 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Text, View, Image, Pressable, ScrollView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
 import { ProfileContext } from './ProfileContext';
+import { useNavigation } from '@react-navigation/native';
 import logo from '../assets/logo_long.png'; // Adjust the path as necessary
 
 export default function ProfileScreen() {
-  const navigation = useNavigation();
   const { profile } = useContext(ProfileContext);
 
   return (
@@ -37,12 +36,6 @@ export default function ProfileScreen() {
             </View>
           </View>
         </View>
-        <Pressable style={styles.editButton} onPress={() => navigation.navigate('EditProfile')}>
-          <Text style={styles.buttonText}>Edit Profile</Text>
-        </Pressable>
-        <Pressable style={styles.homeButton} onPress={() => navigation.navigate('Home')}>
-          <Text style={styles.buttonText}>Log Out</Text>
-        </Pressable>
       </View>
     </ScrollView>
   );
@@ -130,24 +123,5 @@ const styles = StyleSheet.create({
     aspectRatio: 1, // Maintain aspect ratio
     borderRadius: 10,
     marginBottom: 10,
-  },
-  editButton: {
-    backgroundColor: '#623b1d',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 5,
-    marginBottom: 10,
-  },
-  homeButton: {
-    backgroundColor: '#623b1d',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 5,
-  },
-  buttonText: {
-    fontSize: 18,
-    color: '#fff',
-    fontWeight: 'bold',
-    textAlign: 'center',
   },
 });
