@@ -1,17 +1,18 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, Pressable } from 'react-native';
 import { ProfileContext } from './ProfileContext';
 import { useNavigation } from '@react-navigation/native';
 import logo from '../assets/logo_long.png'; // Adjust the path as necessary
 
 export default function ProfileScreen() {
   const { profile } = useContext(ProfileContext);
+  const navigation = useNavigation();
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollViewContent}>
-      <View style={styles.container}>
-        <Image source={logo} style={styles.logo} />
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.content}>
+          <Image source={logo} style={styles.logo} />
           <View style={styles.centeredContent}>
             <Image source={profile.profileImage} style={styles.profileImage} />
             <Text style={styles.subtitle}>{profile.userName}</Text>
@@ -31,33 +32,33 @@ export default function ProfileScreen() {
             <Text style={styles.photoTitle}>Photos:</Text>
           </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+      <Pressable style={styles.editButton} onPress={() => navigation.navigate('EditProfile')}>
+        <Text style={styles.buttonText}>Edit Profile</Text>
+      </Pressable>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  scrollViewContent: {
-    flexGrow: 1,
-    backgroundColor: '#ccb7a4',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-  },
   container: {
-    width: '100%',
+    flex: 1,
+    backgroundColor: '#ccb7a4',
+  },
+  scrollViewContent: {
+    paddingHorizontal: 20,
+    paddingTop: 10,
+    paddingBottom: 100, // Ensure space for the button at the bottom
+  },
+  content: {
     alignItems: 'center',
   },
   logo: {
-    width: 200, // Adjust width as per your design
-    height: 50, // Adjust height as per your design
+    width: 200,
+    height: 50,
     resizeMode: 'contain',
-    marginBottom: 20,
-  },
-  content: {
-    width: '100%',
-    alignItems: 'center',
+    marginBottom: 10,
+    marginTop: 10,
   },
   centeredContent: {
     flexDirection: 'column',
@@ -108,15 +109,25 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     textAlign: 'left',
   },
-  photosGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
   photo: {
-    width: '32%', // Adjust width as per your design
-    aspectRatio: 1, // Maintain aspect ratio
+    width: '32%',
+    aspectRatio: 1,
     borderRadius: 10,
     marginBottom: 10,
+  },
+  editButton: {
+    backgroundColor: '#623b1d',
+    paddingHorizontal: 20,
+    paddingVertical: 2,
+    borderRadius: 5,
+    position: 'absolute',
+    bottom: 20,
+    left: 95,
+    transform: [{ translateX: -50 }],
+  },
+  buttonText: {
+    fontSize: 15,
+    color: '#fff',
+    fontWeight: 'bold',
   },
 });

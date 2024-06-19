@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { ProfileContext } from './ProfileContext';
+import logo from '../assets/logo_long.png'; // Adjust the path as necessary
 
 export default function EditProfileScreen() {
   const navigation = useNavigation();
@@ -13,7 +14,6 @@ export default function EditProfileScreen() {
   const [userName, setUserName] = useState(profile.userName);
   const [dogNames, setDogNames] = useState(profile.dogNames);
   const [bio, setBio] = useState(profile.bio);
-  const [photos, setPhotos] = useState(profile.photos);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -28,21 +28,8 @@ export default function EditProfileScreen() {
     }
   };
 
-  const addPhoto = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      setPhotos([...photos, { uri: result.assets[0].uri }]);
-    }
-  };
-
   const handleSave = () => {
-    setProfile({ profileImage, userName, dogNames, bio, photos });
+    setProfile({ profileImage, userName, dogNames, bio });
     navigation.navigate('Profile');
   };
 
@@ -59,7 +46,7 @@ export default function EditProfileScreen() {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.content}>
-        <Text style={styles.title}>Edit Profile</Text>
+        <Image source={logo} style={styles.logo} />
         <Pressable onPress={pickImage}>
           <Image source={profileImage} style={styles.profileImage} />
         </Pressable>
@@ -96,15 +83,6 @@ export default function EditProfileScreen() {
           multiline
           placeholder="Write a short bio..."
         />
-        <Text style={styles.photoTitle}>Photos:</Text>
-        <View style={styles.photosContainer}>
-          {photos.map((photo, index) => (
-            <Image key={index} source={photo} style={styles.photo} />
-          ))}
-        </View>
-        <Pressable style={styles.addPhotoButton} onPress={addPhoto}>
-          <Text style={styles.buttonText}>Add Photo</Text>
-        </Pressable>
         <Pressable style={styles.saveButton} onPress={handleSave}>
           <Text style={styles.buttonText}>Save</Text>
         </Pressable>
@@ -128,9 +106,10 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
+  logo: {
+    width: 200, // Adjust width as per your design
+    height: 50, // Adjust height as per your design
+    resizeMode: 'contain',
     marginBottom: 20,
   },
   profileImage: {
@@ -163,30 +142,6 @@ const styles = StyleSheet.create({
   bioInput: {
     textAlignVertical: 'top',
     height: 100,
-  },
-  photoTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  photosContainer: {
-    width: '100%',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-  },
-  photo: {
-    width: 100,
-    height: 100,
-    borderRadius: 10,
-    margin: 5,
-  },
-  addPhotoButton: {
-    backgroundColor: '#623b1d',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 5,
-    marginBottom: 20,
   },
   saveButton: {
     backgroundColor: '#623b1d',

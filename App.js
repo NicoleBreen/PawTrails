@@ -22,8 +22,6 @@ function MainTabNavigator() {
 
           if (route.name === 'Profile') {
             iconName = focused ? 'person' : 'person-outline';
-          } else if (route.name === 'EditProfile') {
-            iconName = focused ? 'create' : 'create-outline';
           }
 
           return <Ionicons name={iconName} size={size} color={color} />;
@@ -33,7 +31,6 @@ function MainTabNavigator() {
       })}
     >
       <Tab.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
-      <Tab.Screen name="EditProfile" component={EditProfileScreen} options={{ headerShown: false }} />
     </Tab.Navigator>
   );
 }
@@ -57,6 +54,11 @@ export default function App() {
             name="MainTabs"
             component={MainTabNavigator}
             options={{ headerShown: false }} // Hide header for MainTabNavigator
+          />
+          <Stack.Screen
+            name="EditProfile"
+            component={EditProfileScreen}
+            options={{ headerShown: false }} // Hide header for EditProfileScreen
           />
         </Stack.Navigator>
         <StatusBar style="auto" />
