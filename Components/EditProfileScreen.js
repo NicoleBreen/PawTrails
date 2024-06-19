@@ -79,7 +79,7 @@ export default function EditProfileScreen() {
                 newDogNames[index] = text;
                 setDogNames(newDogNames);
               }}
-              placeholder={`Dog Name ${index + 1}`}
+              placeholder={`Dog ${index + 1}`}
             />
             <Pressable onPress={() => removeDogName(index)}>
               <Icon name="close" size={24} color="#FF6347" />
