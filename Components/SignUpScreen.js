@@ -10,20 +10,38 @@ export default function SignUpScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
 
   const handleSignUp = () => {
-    // Add sign-up logic here (e.g., API call to register the user)
-    if (password === confirmPassword) {
-      // Simulate a successful sign-up
-      Alert.alert('Success', 'You have successfully signed up!', [
-        {
-          text: 'OK',
-          onPress: () => navigation.navigate('Login'),
-        },
-      ]);
-    } else {
-      Alert.alert('Error', 'Passwords do not match');
+    // Reset error message
+    setError('');
+
+    // Validation logic
+    if (!email || !password || !confirmPassword) {
+      setError('All fields are required');
+      return;
     }
+
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    // Simulate a check for an existing user
+    const existingUser = false; // Replace this with actual logic to check if the user exists
+
+    if (existingUser) {
+      setError('User already exists');
+      return;
+    }
+
+    // Simulate a successful sign-up
+    Alert.alert('Success', 'You have successfully signed up!', [
+      {
+        text: 'OK',
+        onPress: () => navigation.navigate('Login'),
+      },
+    ]);
   };
 
   return (
@@ -57,6 +75,7 @@ export default function SignUpScreen() {
             autoCapitalize="none"
           />
         </View>
+        {error ? <Text style={styles.errorText}>{error}</Text> : null}
       </View>
       <View style={styles.bottomContainer}>
         <Pressable style={styles.button} onPress={handleSignUp}>
@@ -111,6 +130,10 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderRadius: 5,
     backgroundColor: '#fff',
+  },
+  errorText: {
+    color: 'red',
+    marginTop: 10,
   },
   button: {
     backgroundColor: '#623b1d',
