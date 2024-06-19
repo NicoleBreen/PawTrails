@@ -29,11 +29,6 @@ export default function ProfileScreen() {
           </View>
           <View style={styles.section}>
             <Text style={styles.photoTitle}>Photos:</Text>
-            <View style={styles.photosGrid}>
-              {profile.photos.map((photo, index) => (
-                <Image key={index} source={photo} style={styles.photo} />
-              ))}
-            </View>
           </View>
         </View>
       </View>
