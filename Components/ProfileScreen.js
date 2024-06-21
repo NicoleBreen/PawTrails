@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { StyleSheet, Text, View, Image, ScrollView, Pressable } from 'react-native';
 import { ProfileContext } from './ProfileContext';
 import { useNavigation } from '@react-navigation/native';
-import logo from '../assets/logo_long.png'; // Adjust the path as necessary
+import logo from '../assets/logo_long.png'; 
 
 export default function ProfileScreen() {
   const { profile } = useContext(ProfileContext);
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   scrollViewContent: {
     paddingHorizontal: 20,
     paddingTop: 10,
-    paddingBottom: 100, // Ensure space for the button at the bottom
+    paddingBottom: 100, 
   },
   content: {
     alignItems: 'center',
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     width: 200,
     height: 50,
     resizeMode: 'contain',
-    marginBottom: 10,
+    marginBottom: 50,
     marginTop: 10,
   },
   centeredContent: {

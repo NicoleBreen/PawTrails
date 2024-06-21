@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, Pressable, TextInput, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-// Ensures that the view is responsive and adjusts its size based on the device's screen width
+// adjusts size of view based on the device's screen width
 const screenWidth = Dimensions.get('window').width;
 
 export default function LoginScreen() {
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     position: 'absolute',
-    bottom: 20, // 
+    bottom: 20, 
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',

@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, Dimensions, ActivityIndicator, Pressable } from
 import MapView, { Polyline } from 'react-native-maps';
 import * as Location from 'expo-location';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation
+import { useNavigation } from '@react-navigation/native'; 
 
 export default function WalkScreen() {
   const [location, setLocation] = useState(null);
@@ -15,7 +15,7 @@ export default function WalkScreen() {
   const [distance, setDistance] = useState(0);
 
   const watchId = useRef(null);
-  const navigation = useNavigation(); // Initialize navigation
+  const navigation = useNavigation(); 
 
   useEffect(() => {
     const initializeLocation = async () => {

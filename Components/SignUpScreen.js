@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, Pressable, TextInput, Dimensions, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-// Ensures that the view is responsive and adjusts its size based on the device's screen width
+// adjusts size of view based on the device's screen width
 const screenWidth = Dimensions.get('window').width;
 
 export default function SignUpScreen() {
@@ -28,7 +28,7 @@ export default function SignUpScreen() {
     }
 
     // Simulate a check for an existing user
-    const existingUser = false; // Replace this with actual logic to check if the user exists
+    const existingUser = false; // Replace with actual logic to check if user exists
 
     if (existingUser) {
       setError('User already exists');
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start', 
     width: '100%',
     maxWidth: 400, 
-    marginTop: 20, // Added some margin to move content up
+    marginTop: 20, 
   },
   image: {
     width: screenWidth * 0.8, 

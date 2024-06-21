@@ -1,19 +1,23 @@
 import React, { useState, useContext } from 'react';
-import { StyleSheet, Text, View, Image, Pressable, TextInput, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Image, Pressable, TextInput, ScrollView, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { ProfileContext } from './ProfileContext';
-import logo from '../assets/logo_long.png'; // Adjust the path as necessary
+import logo from '../assets/logo_long.png';
 
 export default function EditProfileScreen() {
   const navigation = useNavigation();
   const { profile, setProfile } = useContext(ProfileContext);
 
-  const [profileImage, setProfileImage] = useState(profile.profileImage);
-  const [userName, setUserName] = useState(profile.userName);
-  const [dogNames, setDogNames] = useState(profile.dogNames);
-  const [bio, setBio] = useState(profile.bio);
+  const defaultUserName = profile.userName === 'Add User Name' ? '' : profile.userName;
+  const defaultDogNames = profile.dogNames.map(name => name === 'Add Dog Name' ? '' : name);
+  const defaultBio = profile.bio === 'Write a bio here to introduce yourself to other Paw Trails users...' ? '' : profile.bio;
+
+  const [profileImage, setProfileImage] = useState(profile.profileImage || null);
+  const [userName, setUserName] = useState(defaultUserName);
+  const [dogNames, setDogNames] = useState(defaultDogNames.length ? defaultDogNames : ['']);
+  const [bio, setBio] = useState(defaultBio);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -29,6 +33,24 @@ export default function EditProfileScreen() {
   };
 
   const handleSave = () => {
+    if (!profileImage) {
+      Alert.alert('Validation Error', 'Profile image is required.');
+      return;
+    }
+    if (!userName.trim()) {
+      Alert.alert('Validation Error', 'User name is required.');
+      return;
+    }
+    for (const dogName of dogNames) {
+      if (!dogName.trim()) {
+        Alert.alert('Validation Error', 'All dog names must be filled.');
+        return;
+      }
+    }
+    if (!bio.trim()) {
+      Alert.alert('Validation Error', 'Bio is required.');
+      return;
+    }
     setProfile({ profileImage, userName, dogNames, bio });
     navigation.navigate('Profile');
   };
@@ -81,7 +103,7 @@ export default function EditProfileScreen() {
           value={bio}
           onChangeText={setBio}
           multiline
-          placeholder="Write a short bio..."
+          placeholder="Write a short bio here..."
         />
         <Pressable style={styles.saveButton} onPress={handleSave}>
           <Text style={styles.buttonText}>Save</Text>
@@ -107,8 +129,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    width: 200, // Adjust width as per your design
-    height: 50, // Adjust height as per your design
+    width: 200,
+    height: 50,
     resizeMode: 'contain',
     marginBottom: 20,
   },
