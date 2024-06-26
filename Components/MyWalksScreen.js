@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, FlatList } from 'react-native';
+import { StyleSheet, View, Text, FlatList, ActivityIndicator, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function MyWalksScreen() {
   const [walks, setWalks] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(true); // Loading state
+  const [error, setError] = useState(null); // Error state
+  
   useEffect(() => {
     const fetchWalks = async () => {
       try {
@@ -12,6 +14,9 @@ export default function MyWalksScreen() {
         setWalks(existingWalks ? JSON.parse(existingWalks) : []);
       } catch (error) {
         console.error('Error fetching walks:', error);
+        setError('Failed to load walks. Please try again later.');
+      } finally {
+        setIsLoading(false); // End loading
       }
     };
 
@@ -33,17 +38,23 @@ export default function MyWalksScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>My Walks</Text>
-      <FlatList
-        data={walks}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.walkItem}>
-            <Text style={styles.date}>{formatDate(item.date)}</Text>
-            <Text style={styles.details}>Distance: {(item.distance / 1000).toFixed(2)} km</Text>
-            <Text style={styles.details}>Time: {formatTime(item.time)}</Text>
-          </View>
-        )}
-      />
+      {isLoading ? (
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : error ? (
+        <Text style={styles.errorText}>{error}</Text>
+      ) : (
+        <FlatList
+          data={walks}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.walkItem}>
+              <Text style={styles.date}>{formatDate(item.date)}</Text>
+              <Text style={styles.details}>Distance: {(item.distance / 1000).toFixed(2)} km</Text>
+              <Text style={styles.details}>Time: {formatTime(item.time)}</Text>
+            </View>
+          )}
+        />
+      )}
     </View>
   );
 }
@@ -71,5 +82,10 @@ const styles = StyleSheet.create({
   },
   details: {
     fontSize: 16,
+  },
+  errorText: {
+    fontSize: 16,
+    color: 'red',
+    textAlign: 'center',
   },
 });

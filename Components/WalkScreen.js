@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, View, Text, Dimensions, ActivityIndicator, Pressable } from 'react-native';
+import { StyleSheet, View, Text, Dimensions, ActivityIndicator, Pressable, Alert } from 'react-native';
 import MapView, { Polyline } from 'react-native-maps';
 import * as Location from 'expo-location';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native'; 
+import { useNavigation } from '@react-navigation/native';
 
 export default function WalkScreen() {
   const [location, setLocation] = useState(null);
@@ -13,12 +13,14 @@ export default function WalkScreen() {
   const [initialRegion, setInitialRegion] = useState(null);
   const [startTime, setStartTime] = useState(null);
   const [distance, setDistance] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   const watchId = useRef(null);
-  const navigation = useNavigation(); 
+  const navigation = useNavigation();
+  const maxRetryAttempts = 3;
 
   useEffect(() => {
-    const initializeLocation = async () => {
+    const initializeLocation = async (attempt = 1) => {
       try {
         let { status } = await Location.requestForegroundPermissionsAsync();
         if (status !== 'granted') {
@@ -56,12 +58,21 @@ export default function WalkScreen() {
             setLocation({ latitude, longitude });
             setRoute((prevRoute) => [...prevRoute, { latitude, longitude }]);
 
-            const addressResponse = await Location.reverseGeocodeAsync({ latitude, longitude });
-            setAddress(addressResponse[0]);
+            try {
+              const addressResponse = await Location.reverseGeocodeAsync({ latitude, longitude });
+              setAddress(addressResponse[0]);
+            } catch (error) {
+              console.error('Error during reverse geocoding:', error);
+            }
           }
         );
       } catch (error) {
         console.error('Error initializing location:', error);
+        if (attempt < maxRetryAttempts) {
+          setTimeout(() => initializeLocation(attempt + 1), 2000);
+        } else {
+          setErrorMsg('Failed to initialize location after multiple attempts. Please try again later.');
+        }
       }
     };
 
@@ -93,6 +104,7 @@ export default function WalkScreen() {
   };
 
   const stopWalk = async () => {
+    setIsLoading(true); // Start loading
     try {
       if (watchId.current) {
         watchId.current.remove();
@@ -121,6 +133,11 @@ export default function WalkScreen() {
       navigation.navigate('My Walks');
     } catch (error) {
       console.error('Error stopping walk:', error);
+      Alert.alert('Error', 'Failed to save walk data. Please try again.', [
+        { text: 'OK' }
+      ]);
+    } finally {
+      setIsLoading(false); // End loading
     }
   };
 
@@ -157,9 +174,13 @@ export default function WalkScreen() {
         <Text>{text}</Text>
       </View>
       <View style={styles.buttonContainer}>
-        <Pressable style={styles.stopButton} onPress={stopWalk}>
-          <Text style={styles.buttonText}>Stop Walk</Text>
-        </Pressable>
+        {isLoading ? (
+          <ActivityIndicator size="large" color="#0000ff" />
+        ) : (
+          <Pressable style={styles.stopButton} onPress={stopWalk}>
+            <Text style={styles.buttonText}>Stop Walk</Text>
+          </Pressable>
+        )}
       </View>
     </View>
   );
