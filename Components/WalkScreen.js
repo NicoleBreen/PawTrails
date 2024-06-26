@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
   },
   stopButton: {
     backgroundColor: '#623b1d',
-    paddingVertical: 50,
+    paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
   },

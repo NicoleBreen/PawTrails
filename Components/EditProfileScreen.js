@@ -72,16 +72,19 @@ export default function EditProfileScreen() {
         <Pressable onPress={pickImage}>
           <Image source={profileImage} style={styles.profileImage} />
         </Pressable>
-        <TextInput
-          style={styles.input}
-          value={userName}
-          onChangeText={setUserName}
-          placeholder="User Name"
-        />
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            value={userName}
+            onChangeText={setUserName}
+            placeholder="User Name"
+            onFocus={() => setUserName('')}
+          />
+        </View>
         {dogNames.map((dogName, index) => (
           <View key={index} style={styles.dogNameContainer}>
             <TextInput
-              style={styles.input}
+              style={styles.dogNameInput}
               value={dogName}
               onChangeText={text => {
                 const newDogNames = [...dogNames];
@@ -89,21 +92,29 @@ export default function EditProfileScreen() {
                 setDogNames(newDogNames);
               }}
               placeholder={`Dog ${index + 1}`}
+              onFocus={() => {
+                const newDogNames = [...dogNames];
+                newDogNames[index] = '';
+                setDogNames(newDogNames);
+              }}
             />
-            <Pressable onPress={() => removeDogName(index)}>
-              <Icon name="close" size={24} color="#FF6347" />
+            <Pressable style={styles.closeButton} onPress={() => removeDogName(index)}>
+              <Icon name="close" size={24} color="#000" />
             </Pressable>
           </View>
         ))}
-        <Pressable style={styles.addButton} onPress={addDogName}>
-          <Text style={styles.buttonText}>Add Dog</Text>
-        </Pressable>
+        <View style={styles.inputContainer}>
+          <Pressable style={styles.addButton} onPress={addDogName}>
+            <Text style={styles.buttonText}>Add Dog</Text>
+          </Pressable>
+        </View>
         <TextInput
           style={[styles.input, styles.bioInput]}
           value={bio}
           onChangeText={setBio}
           multiline
           placeholder="Write a short bio here..."
+          onFocus={() => setBio('')}
         />
         <Pressable style={styles.saveButton} onPress={handleSave}>
           <Text style={styles.buttonText}>Save</Text>
@@ -140,26 +151,41 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     marginBottom: 20,
   },
-  input: {
+  inputContainer: {
     width: '85%',
+    marginBottom: 10,
+  },
+  input: {
+    width: '100%',
     padding: 10,
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 5,
     backgroundColor: '#fff',
-    marginBottom: 10,
   },
   dogNameContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
+    width: '85%',
+  },
+  dogNameInput: {
+    flex: 1,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    backgroundColor: '#fff',
+  },
+  closeButton: {
+    marginLeft: 10,
   },
   addButton: {
     backgroundColor: '#623b1d',
     paddingHorizontal: 20,
-    paddingVertical: 10,
+    paddingVertical: 4,
     borderRadius: 5,
-    marginBottom: 20,
+    alignSelf: 'flex-start',
   },
   bioInput: {
     textAlignVertical: 'top',
