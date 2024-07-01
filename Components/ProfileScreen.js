@@ -43,7 +43,7 @@ export default function ProfileScreen() {
                     source={{ uri: photo.uri }} 
                     style={styles.photo} 
                   />
-                  {/* <Text style={{ color: 'black' }}>Image {index + 1}</Text> */}
+                  {/* <Text style={{ color: 'black' }}>Image {index + 1}</Text> */} 
                 </View>
               ))}
             </View>
