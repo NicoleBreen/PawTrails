@@ -1,12 +1,17 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { StyleSheet, Text, View, Image, ScrollView, Pressable } from 'react-native';
 import { ProfileContext } from './ProfileContext';
 import { useNavigation } from '@react-navigation/native';
-import logo from '../assets/logo_long.png'; 
+import logo from '../assets/logo_long.png';
+import UploadImage from './UploadImage';
 
 export default function ProfileScreen() {
   const { profile } = useContext(ProfileContext);
   const navigation = useNavigation();
+
+  useEffect(() => {
+    console.log("Profile data: ", profile);
+  }, [profile]);
 
   return (
     <View style={styles.container}>
@@ -30,6 +35,16 @@ export default function ProfileScreen() {
           </View>
           <View style={styles.section}>
             <Text style={styles.photoTitle}>Photos:</Text>
+            <View style={styles.photoContainer}>
+              {profile.photos.map((photo, index) => (
+                <Image 
+                  key={index} 
+                  source={{ uri: photo.uri }} 
+                  style={styles.photo} 
+                />
+              ))}
+              <UploadImage />
+            </View>
           </View>
         </View>
       </ScrollView>
@@ -109,11 +124,18 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     textAlign: 'left',
   },
+  photoContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
   photo: {
     width: '32%',
     aspectRatio: 1,
     borderRadius: 10,
     marginBottom: 10,
+    borderWidth: 2, // Add border to debug
+    borderColor: 'red', // Add border color to debug
   },
   editButton: {
     backgroundColor: '#623b1d',

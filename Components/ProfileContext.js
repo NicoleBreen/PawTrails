@@ -8,7 +8,7 @@ export const ProfileProvider = ({ children }) => {
     userName: 'User',
     dogNames: ['Dog 1', 'Dog 2'],
     bio: 'Write a bio here to introduce yourself to other Paw Trails users...',
-    photos: [],
+    photos: [], // Ensure this is an empty array initially
   });
 
   return (
