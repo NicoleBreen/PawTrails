@@ -37,12 +37,17 @@ export default function ProfileScreen() {
             <Text style={styles.photoTitle}>Photos:</Text>
             <View style={styles.photoContainer}>
               {profile.photos.map((photo, index) => (
-                <Image 
-                  key={index} 
-                  source={{ uri: photo.uri }} 
-                  style={styles.photo} 
-                />
+                <View key={index} style={styles.photoWrapper}>
+                  <Image 
+                    key={index} 
+                    source={{ uri: photo.uri }} 
+                    style={styles.photo} 
+                  />
+                  {/* <Text style={{ color: 'black' }}>Image {index + 1}</Text> */}
+                </View>
               ))}
+            </View>
+            <View style={styles.uploadImageWrapper}>
               <UploadImage />
             </View>
           </View>
@@ -129,13 +134,20 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-between',
   },
-  photo: {
+  photoWrapper: {
     width: '32%',
     aspectRatio: 1,
-    borderRadius: 10,
     marginBottom: 10,
     borderWidth: 2, // Add border to debug
-    borderColor: 'red', // Add border color to debug
+    borderColor: 'black', // Add border color to debug
+  },
+  photo: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 10,
+  },
+  uploadImageWrapper: {
+    marginTop: 50, // Add margin to create space between the images and the upload button
   },
   editButton: {
     backgroundColor: '#623b1d',
