@@ -15,6 +15,8 @@ import { ProfileProvider } from './Components/ProfileContext';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+// Bottom tab navigator with three tabs for Profile, Walk and My Walks
+// Badges to be added
 function MainTabNavigator() {
   console.log('Rendering MainTabNavigator');
   return (
@@ -45,6 +47,8 @@ function MainTabNavigator() {
   );
 }
 
+// Stack navigator sets LoginScreen as home (initial route)
+// Possibly change to profile screen in the future??
 export default function App() {
   console.log('Rendering App');
   return (
