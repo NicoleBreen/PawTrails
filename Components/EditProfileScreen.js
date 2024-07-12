@@ -43,7 +43,7 @@ export default function EditProfileScreen() {
     }
     for (const dogName of dogNames) {
       if (!dogName.trim()) {
-        Alert.alert('Validation Error', 'All dog names must be filled.');
+        Alert.alert('Validation Error', 'Input at least one dog name.');
         return;
       }
     }
