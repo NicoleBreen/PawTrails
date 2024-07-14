@@ -9,7 +9,7 @@ import ProfileScreen from './Components/ProfileScreen';
 import SignUpScreen from './Components/SignUpScreen';
 import EditProfileScreen from './Components/EditProfileScreen';
 import WalkScreen from './Components/WalkScreen';
-import MyWalksScreen from './Components/MyWalksScreen'; // Import MyWalksScreen
+import MyWalksScreen from './Components/MyWalksScreen'; 
 import { ProfileProvider } from './Components/ProfileContext';
 
 const Stack = createNativeStackNavigator();

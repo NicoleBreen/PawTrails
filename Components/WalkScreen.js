@@ -22,14 +22,19 @@ export default function WalkScreen() {
   useEffect(() => {
     const initializeLocation = async (attempt = 1) => {
       try {
+        // Request permission to use location services
         let { status } = await Location.requestForegroundPermissionsAsync();
         if (status !== 'granted') {
           setErrorMsg('Permission to access location was denied');
           return;
         }
 
+        // Get the current position of the user
         let currentLocation = await Location.getCurrentPositionAsync({});
         const { latitude, longitude } = currentLocation.coords;
+
+        // Latitude and Logitude extracted from current position
+        // Used to set the initial region for the map and current location
         setInitialRegion({
           latitude,
           longitude,
@@ -37,12 +42,16 @@ export default function WalkScreen() {
           longitudeDelta: 0.01,
         });
         setLocation({ latitude, longitude });
-
+        
+        // Reverse geocode to get address of current location
         const addressResponse = await Location.reverseGeocodeAsync({ latitude, longitude });
         setAddress(addressResponse[0]);
-
+        
+        // Set the start time for the walk
+        // For My Walks screen logging puposes
         setStartTime(new Date());
-
+        
+        // Watch the position and update the location and route
         watchId.current = await Location.watchPositionAsync(
           {
             accuracy: Location.Accuracy.High,
@@ -55,10 +64,13 @@ export default function WalkScreen() {
               const distanceIncrement = getDistance(location, { latitude, longitude });
               setDistance(prevDistance => prevDistance + distanceIncrement);
             }
+
+            // Update current location and route with new location
             setLocation({ latitude, longitude });
             setRoute((prevRoute) => [...prevRoute, { latitude, longitude }]);
 
             try {
+              // Reverse geocode for address of new location 
               const addressResponse = await Location.reverseGeocodeAsync({ latitude, longitude });
               setAddress(addressResponse[0]);
             } catch (error) {
@@ -68,6 +80,7 @@ export default function WalkScreen() {
         );
       } catch (error) {
         console.error('Error initializing location:', error);
+        // Retry initialisation if it fails to max number of attempts
         if (attempt < maxRetryAttempts) {
           setTimeout(() => initializeLocation(attempt + 1), 2000);
         } else {
@@ -77,7 +90,8 @@ export default function WalkScreen() {
     };
 
     initializeLocation();
-
+    
+    // Cleanup function to remove the location watcher when finished
     return () => {
       if (watchId.current) {
         watchId.current.remove();
