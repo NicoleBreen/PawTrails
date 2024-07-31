@@ -11,8 +11,22 @@ export const ProfileProvider = ({ children }) => {
     photos: [], // Ensure this is an empty array initially
   });
 
+  const updateProfile = (newProfile) => {
+    console.log('Updating profile with:', newProfile);
+    setProfile((prevProfile) => {
+      const updatedProfile = {
+        ...prevProfile,
+        ...newProfile,
+        dogNames: Array.isArray(newProfile.dogNames) ? newProfile.dogNames : prevProfile.dogNames,
+        photos: Array.isArray(newProfile.photos) ? newProfile.photos : prevProfile.photos,
+      };
+      console.log('Updated profile state:', updatedProfile);
+      return updatedProfile;
+    });
+  };
+
   return (
-    <ProfileContext.Provider value={{ profile, setProfile }}>
+    <ProfileContext.Provider value={{ profile, setProfile, updateProfile }}>
       {children}
     </ProfileContext.Provider>
   );

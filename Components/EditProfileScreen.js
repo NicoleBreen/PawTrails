@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { StyleSheet, Text, View, Image, Pressable, TextInput, ScrollView, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
@@ -11,7 +11,7 @@ export default function EditProfileScreen() {
   const { profile, setProfile } = useContext(ProfileContext);
 
   const defaultUserName = profile.userName === 'Add User Name' ? '' : profile.userName;
-  const defaultDogNames = profile.dogNames.map(name => name === 'Add Dog Name' ? '' : name);
+  const defaultDogNames = Array.isArray(profile.dogNames) ? profile.dogNames : [];
   const defaultBio = profile.bio === 'Write a bio here to introduce yourself to other Paw Trails users...' ? '' : profile.bio;
 
   const [profileImage, setProfileImage] = useState(profile.profileImage || null);
@@ -32,7 +32,16 @@ export default function EditProfileScreen() {
     }
   };
 
+  useEffect(() => {
+    console.log('Profile data in EditProfileScreen:', profile);
+  }, [profile]);
+
   const handleSave = () => {
+    const newProfile = { profileImage, userName, dogNames, bio };
+    console.log('Saving new profile:', newProfile);
+    setProfile(newProfile);
+    navigation.navigate('Profile');
+  
     if (!profileImage) {
       Alert.alert('Validation Error', 'Profile image is required.');
       return;

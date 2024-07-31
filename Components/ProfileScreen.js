@@ -8,10 +8,29 @@ import UploadImage from './UploadImage';
 export default function ProfileScreen() {
   const { profile } = useContext(ProfileContext);
   const navigation = useNavigation();
+  const dogNames = Array.isArray(profile?.dogNames) ? profile.dogNames : [];
+  const photos = Array.isArray(profile?.photos) ? profile.photos : [];
+  if (!profile) {
+    console.error('Profile is undefined');
+  } else if (!Array.isArray(profile.dogNames)) {
+    console.error('dogNames is not an array:', profile.dogNames);
+  }
 
   useEffect(() => {
-    console.log("Profile data: ", profile);
+    console.log("Profile data in ProfileScreen: ", profile);
   }, [profile]);
+
+  if (!profile) {
+    console.error('Profile is undefined');
+    return null;
+  }
+  
+  if (!Array.isArray(profile.dogNames)) {
+    console.error('dogNames is not an array:', profile.dogNames);
+  }
+ 
+  console.log('Dog names:', dogNames);
+  console.log('Photos:', photos);
 
   return (
     <View style={styles.container}>
@@ -21,12 +40,14 @@ export default function ProfileScreen() {
           <View style={styles.centeredContent}>
             <Image source={profile.profileImage} style={styles.profileImage} />
             <Text style={styles.subtitle}>{profile.userName}</Text>
-            {profile.dogNames.length > 0 && (
+            {Array.isArray(dogNames) && dogNames.length > 0 ? (
               <View style={styles.dogNamesContainer}>
-                {profile.dogNames.map((dogName, index) => (
+                {dogNames.map((dogName, index) => (
                   <Text key={index} style={styles.dogName}>{dogName}</Text>
                 ))}
               </View>
+            ) : (
+              <Text>No dog names found</Text>
             )}
           </View>
           <View style={styles.section}>
@@ -36,16 +57,19 @@ export default function ProfileScreen() {
           <View style={styles.section}>
             <Text style={styles.photoTitle}>Photos:</Text>
             <View style={styles.photoContainer}>
-              {profile.photos.map((photo, index) => (
-                <View key={index} style={styles.photoWrapper}>
-                  <Image 
-                    key={index} 
-                    source={{ uri: photo.uri }} 
-                    style={styles.photo} 
-                  />
-                  {/* <Text style={{ color: 'black' }}>Image {index + 1}</Text> */} 
-                </View>
-              ))}
+              {Array.isArray(photos) && photos.length > 0 ? (
+                photos.map((photo, index) => (
+                  <View key={index} style={styles.photoWrapper}>
+                    <Image 
+                      key={index} 
+                      source={{ uri: photo.uri }} 
+                      style={styles.photo} 
+                    />
+                  </View>
+                ))
+              ) : (
+                <Text>No photos found</Text>
+              )}
             </View>
             <View style={styles.uploadImageWrapper}>
               <UploadImage />
