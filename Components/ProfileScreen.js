@@ -79,17 +79,17 @@ export default function ProfileScreen() {
                 <Text>No photos found</Text>
               )}
             </View>
-            <View style={styles.uploadImageWrapper}>
-              <Pressable style={styles.uploadButton} onPress={pickImage}>
-                <Text style={styles.uploadButtonText}>Upload Image</Text>
-              </Pressable>
-            </View>
           </View>
         </View>
       </ScrollView>
-      <Pressable style={styles.editButton} onPress={() => navigation.navigate('EditProfile')}>
-        <Text style={styles.buttonText}>Edit Profile</Text>
-      </Pressable>
+      <View style={styles.buttonContainer}>
+        <Pressable style={[styles.button, styles.editButton]} onPress={() => navigation.navigate('EditProfile')}>
+          <Text style={styles.buttonText}>Edit Profile</Text>
+        </Pressable>
+        <Pressable style={[styles.button, styles.uploadButton]} onPress={pickImage}>
+          <Text style={styles.buttonText}>Upload Image</Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
@@ -172,38 +172,34 @@ const styles = StyleSheet.create({
     width: '32%',
     aspectRatio: 1,
     marginBottom: 10,
-    borderWidth: 2, // Add border to debug
-    borderColor: 'black', // Add border color to debug
+    borderWidth: 2,
+    borderColor: 'black',
   },
   photo: {
     width: '100%',
     height: '100%',
     borderRadius: 10,
   },
-  uploadImageWrapper: {
-    marginTop: 50, // Add margin to create space between the images and the upload button
-  },
   uploadButton: {
     backgroundColor: '#623b1d',
-    paddingHorizontal: 20,
-    paddingVertical: 4,
-    borderRadius: 5,
-    alignItems: 'absolute',
-    marginTop: 10,
+    marginTop: 0, // Reset the top margin
   },
-  uploadButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 20,
+    width: '100%',
+  },
+  button: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginHorizontal: 10,
   },
   editButton: {
     backgroundColor: '#623b1d',
-    paddingHorizontal: 20,
-    paddingVertical: 2,
-    borderRadius: 5,
-    position: 'absolute',
-    bottom: 20,
-    left: 95,
-    transform: [{ translateX: -50 }],
   },
   buttonText: {
     fontSize: 15,
