@@ -1,34 +1,42 @@
-import React, { useContext, useEffect } from 'react';
-import { StyleSheet, Text, View, Image, ScrollView, Pressable } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { StyleSheet, View, Text, Image, ScrollView, Pressable } from 'react-native';
 import { ProfileContext } from './ProfileContext';
 import { useNavigation } from '@react-navigation/native';
+import * as ImagePicker from 'expo-image-picker';
 import logo from '../assets/logo_long.png';
 import UploadImage from './UploadImage';
 
 export default function ProfileScreen() {
-  const { profile } = useContext(ProfileContext);
+  const { profile, setProfile } = useContext(ProfileContext);
   const navigation = useNavigation();
-  const dogNames = Array.isArray(profile?.dogNames) ? profile.dogNames : [];
-  const photos = Array.isArray(profile?.photos) ? profile.photos : [];
-  if (!profile) {
-    console.error('Profile is undefined');
-  } else if (!Array.isArray(profile.dogNames)) {
-    console.error('dogNames is not an array:', profile.dogNames);
-  }
+  const [localPhotos, setLocalPhotos] = useState(profile.photos);
 
   useEffect(() => {
-    console.log("Profile data in ProfileScreen: ", profile);
+    console.log('Profile data in ProfileScreen:', profile);
+    setLocalPhotos(profile.photos); // Update local state when profile changes
   }, [profile]);
 
-  if (!profile) {
-    console.error('Profile is undefined');
-    return null;
-  }
-  
-  if (!Array.isArray(profile.dogNames)) {
-    console.error('dogNames is not an array:', profile.dogNames);
-  }
- 
+  const pickImage = async () => {
+    console.log('Opening image picker...');
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      console.log('Image picker result:', result);
+      const newPhoto = { uri: result.assets[0].uri };
+      const updatedPhotos = [...localPhotos, newPhoto];
+      setLocalPhotos(updatedPhotos); // Update local state
+      setProfile({ ...profile, photos: updatedPhotos }); // Update context state
+    }
+  };
+
+  const dogNames = Array.isArray(profile.dogNames) ? profile.dogNames : [];
+  const photos = Array.isArray(profile.photos) ? profile.photos : [];
+
   console.log('Dog names:', dogNames);
   console.log('Photos:', photos);
 
@@ -72,7 +80,9 @@ export default function ProfileScreen() {
               )}
             </View>
             <View style={styles.uploadImageWrapper}>
-              <UploadImage />
+              <Pressable style={styles.uploadButton} onPress={pickImage}>
+                <Text style={styles.uploadButtonText}>Upload Image</Text>
+              </Pressable>
             </View>
           </View>
         </View>
@@ -172,6 +182,18 @@ const styles = StyleSheet.create({
   },
   uploadImageWrapper: {
     marginTop: 50, // Add margin to create space between the images and the upload button
+  },
+  uploadButton: {
+    backgroundColor: '#623b1d',
+    paddingHorizontal: 20,
+    paddingVertical: 4,
+    borderRadius: 5,
+    alignItems: 'absolute',
+    marginTop: 10,
+  },
+  uploadButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
   },
   editButton: {
     backgroundColor: '#623b1d',
