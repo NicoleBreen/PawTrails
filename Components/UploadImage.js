@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View, Pressable, Text, StyleSheet } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { ProfileContext } from './ProfileContext';
@@ -51,10 +51,10 @@ export default function UploadImage() {
 
   return (
     <View style={imageUploaderStyles.container}>
-      <TouchableOpacity onPress={addImage} style={imageUploaderStyles.uploadBtn}>
+      <Pressable onPress={addImage} style={imageUploaderStyles.uploadBtn}>
         <Text>{'Upload'} Photo</Text>
         <AntDesign name="camera" size={20} color="black" />
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 }
