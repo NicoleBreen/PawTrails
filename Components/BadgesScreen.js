@@ -1,5 +1,8 @@
+// Badge from Flaticon, available at: "https://www.flaticon.com/free-icons/high-quality" 
+
 import React from 'react';
 import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
+import logo from '../assets/logo_long.png'; 
 
 const badges = [
   { id: 1, name: '1 Mile' },
@@ -12,6 +15,9 @@ const badgeImage = require('../assets/badge.png'); // Single image for all miles
 export default function BadgesScreen() {
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.logoContainer}>
+        <Image source={logo} style={styles.logo} />
+      </View>
       <Text style={styles.title}>Badges</Text>
       <View style={styles.badgeContainer}>
         {badges.map((badge) => (
@@ -32,6 +38,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
     backgroundColor: '#ccb7a4',
+  },
+  logo: {
+    width: 200,
+    height: 50,
+    resizeMode: 'contain',
+    marginBottom: 20,
+    marginTop: 10,
   },
   title: {
     fontSize: 24,
