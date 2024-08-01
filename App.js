@@ -10,21 +10,19 @@ import SignUpScreen from './Components/SignUpScreen';
 import EditProfileScreen from './Components/EditProfileScreen';
 import WalkScreen from './Components/WalkScreen';
 import MyWalksScreen from './Components/MyWalksScreen'; 
+import BadgesScreen from './Components/BadgesScreen'; 
 import { ProfileProvider } from './Components/ProfileContext';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-// Bottom tab navigator with three tabs for Profile, Walk and My Walks
-// Badges to be added
+// Bottom tab navigator with four tabs for Profile, Walk, My Walks, and Badges
 function MainTabNavigator() {
-  console.log('Rendering MainTabNavigator');
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
-          console.log(`Rendering icon for route: ${route.name}`);
 
           if (route.name === 'Profile') {
             iconName = focused ? 'person' : 'person-outline';
@@ -32,6 +30,8 @@ function MainTabNavigator() {
             iconName = focused ? 'walk' : 'walk-outline';
           } else if (route.name === 'My Walks') {
             iconName = focused ? 'list' : 'list-outline';
+          } else if (route.name === 'Badges') {
+            iconName = focused ? 'ribbon' : 'ribbon-outline';
           }
 
           return <Ionicons name={iconName} size={size} color={color} />;
@@ -43,14 +43,13 @@ function MainTabNavigator() {
       <Tab.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
       <Tab.Screen name="Walk" component={WalkScreen} options={{ headerShown: false }} />
       <Tab.Screen name="My Walks" component={MyWalksScreen} options={{ headerShown: false }} />
+      <Tab.Screen name="Badges" component={BadgesScreen} options={{ headerShown: false }} />
     </Tab.Navigator>
   );
 }
 
 // Stack navigator sets LoginScreen as home (initial route)
-// Possibly change to profile screen in the future??
 export default function App() {
-  console.log('Rendering App');
   return (
     <ProfileProvider>
       <NavigationContainer>
