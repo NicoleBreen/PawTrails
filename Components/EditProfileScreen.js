@@ -52,7 +52,13 @@ export default function EditProfileScreen() {
       return;
     }
     setProfile({ profileImage, userName, dogNames, bio });
+    Alert.alert('Profile Saved', 'Your profile has been updated successfully.'); // Alert the user
     navigation.navigate('Profile');
+  };
+
+  const handleCancel = () => {
+    Alert.alert('Changes Discarded', 'Your changes have been discarded.'); // Alert the user
+    navigation.goBack();
   };
 
   const addDogName = () => {
@@ -68,8 +74,8 @@ export default function EditProfileScreen() {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.content}>
-        <Image source={logo} style={styles.logo} />
-        <Pressable onPress={pickImage}>
+        <Image source={logo} style={styles.logo} accessibilityLabel="App logo" />
+        <Pressable onPress={pickImage} accessibilityLabel="Change profile picture" accessibilityRole="button">
           <Image source={profileImage} style={styles.profileImage} />
         </Pressable>
         <View style={styles.inputContainer}>
@@ -92,13 +98,17 @@ export default function EditProfileScreen() {
                 setDogNames(newDogNames);
               }}
               placeholder={`Dog ${index + 1}`}
+              accessibilityLabel={`Dog ${index + 1} Name`}
+              accessibilityHint={`Enter the name of dog ${index + 1}`}
               onFocus={() => {
                 const newDogNames = [...dogNames];
                 newDogNames[index] = '';
                 setDogNames(newDogNames);
               }}
             />
-            <Pressable style={styles.closeButton} onPress={() => removeDogName(index)}>
+            <Pressable style={styles.closeButton} onPress={() => removeDogName(index)}
+              accessibilityLabel={`Remove dog ${index + 1} name`}
+              accessibilityRole="button">
               <Icon name="close" size={24} color="#000" />
             </Pressable>
           </View>
@@ -114,13 +124,15 @@ export default function EditProfileScreen() {
           onChangeText={setBio}
           multiline
           placeholder="Introduce yourself and your dog(s)!..."
+          accessibilityLabel="Bio"
+          accessibilityHint="Write a short bio about yourself and your dog(s)"
           onFocus={() => setBio('')}
         />
         <View style={styles.buttonRow}>
           <Pressable style={styles.saveButton} onPress={handleSave}>
             <Text style={styles.buttonText}>Save</Text>
           </Pressable>
-          <Pressable style={styles.cancelButton} onPress={() => navigation.goBack()}>
+          <Pressable style={styles.cancelButton} onPress={handleCancel} accessibilityLabel="Cancel" accessibilityRole="button">
             <Text style={styles.buttonText}>Cancel</Text>
           </Pressable>
         </View>

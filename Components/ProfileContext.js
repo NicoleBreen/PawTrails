@@ -1,3 +1,6 @@
+// ProfilePic from Flaticon 
+// https://www.flaticon.com/free-icons/dog" title="dog icons"
+
 import React, { createContext, useState } from 'react';
 
 export const ProfileContext = createContext();

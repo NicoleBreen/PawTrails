@@ -1,10 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { StyleSheet, View, Text, Image, ScrollView, Pressable } from 'react-native';
+import { StyleSheet, View, Text, Image, ScrollView, Pressable, Alert } from 'react-native';
 import { ProfileContext } from './ProfileContext';
 import { useNavigation } from '@react-navigation/native';
-import * as ImagePicker from 'expo-image-picker';
 import logo from '../assets/logo_long.png';
-import UploadImage from './UploadImage';
+import * as ImagePicker from 'expo-image-picker';
 
 export default function ProfileScreen() {
   const { profile, setProfile } = useContext(ProfileContext);
@@ -31,6 +30,9 @@ export default function ProfileScreen() {
       const updatedPhotos = [...localPhotos, newPhoto];
       setLocalPhotos(updatedPhotos); // Update local state
       setProfile({ ...profile, photos: updatedPhotos }); // Update context state
+      Alert.alert('Image Added', 'The image has been successfully added to your profile.');
+    } else {
+      Alert.alert('Unable to Load Image', 'No image was selected.');
     }
   };
 
@@ -44,9 +46,9 @@ export default function ProfileScreen() {
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.content}>
-          <Image source={logo} style={styles.logo} />
+          <Image source={logo} style={styles.logo} accessibilityLabel="App logo" /> 
           <View style={styles.centeredContent}>
-            <Image source={profile.profileImage} style={styles.profileImage} />
+            <Image source={profile.profileImage} style={styles.profileImage} accessibilityLabel="Profile picture" />
             <Text style={styles.subtitle}>{profile.userName}</Text>
             {Array.isArray(dogNames) && dogNames.length > 0 ? (
               <View style={styles.dogNamesContainer}>
@@ -72,6 +74,8 @@ export default function ProfileScreen() {
                       key={index} 
                       source={{ uri: photo.uri }} 
                       style={styles.photo} 
+                      accessibilityLabel={`Photo ${index + 1}`}
+                      accessibilityHint={`Double tap to view photo ${index + 1}`}
                     />
                   </View>
                 ))
@@ -83,10 +87,14 @@ export default function ProfileScreen() {
         </View>
       </ScrollView>
       <View style={styles.buttonContainer}>
-        <Pressable style={[styles.button, styles.editButton]} onPress={() => navigation.navigate('EditProfile')}>
+        <Pressable style={[styles.button, styles.editButton]} onPress={() => navigation.navigate('EditProfile')}
+          accessibilityLabel="Edit Profile"
+          accessibilityRole="button">
           <Text style={styles.buttonText}>Edit Profile</Text>
         </Pressable>
-        <Pressable style={[styles.button, styles.uploadButton]} onPress={pickImage}>
+        <Pressable style={[styles.button, styles.uploadButton]} onPress={pickImage}
+        accessibilityLabel="Upload Image"
+        accessibilityRole="button">
           <Text style={styles.buttonText}>Upload Image</Text>
         </Pressable>
       </View>
