@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, FlatList, ActivityIndicator, Alert } from 'react-native';
+import { StyleSheet, View, Text, FlatList, ActivityIndicator, Image } from 'react-native'; // Ensure Image is imported
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import logo from '../assets/logo_long.png'; // Import the logo image
 
 export default function MyWalksScreen() {
   const [walks, setWalks] = useState([]);
@@ -37,6 +38,9 @@ export default function MyWalksScreen() {
 
   return (
     <View style={styles.container}>
+      <View style={styles.logoContainer}>
+        <Image source={logo} style={styles.logo} />
+      </View>
       <Text style={styles.title}>My Walks</Text>
       {isLoading ? (
         <ActivityIndicator size="large" color="#0000ff" />
@@ -62,19 +66,32 @@ export default function MyWalksScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: 'center',
     padding: 20,
     backgroundColor: '#ccb7a4',
+  },
+  logoContainer: {
+    width: '100%',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  logo: {
+    width: 200,
+    height: 50,
+    resizeMode: 'contain',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
+    textAlign: 'center',
   },
   walkItem: {
     padding: 15,
     backgroundColor: '#fff',
     marginBottom: 10,
     borderRadius: 5,
+    width: '100%',
   },
   date: {
     fontSize: 18,
