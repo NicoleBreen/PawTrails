@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { StyleSheet, Text, View, Image, Pressable, TextInput, ScrollView, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
@@ -11,7 +11,7 @@ export default function EditProfileScreen() {
   const { profile, setProfile } = useContext(ProfileContext);
 
   const defaultUserName = profile.userName === 'Add User Name' ? '' : profile.userName;
-  const defaultDogNames = Array.isArray(profile.dogNames) ? profile.dogNames : [];
+  const defaultDogNames = profile.dogNames.map(name => name === 'Add Dog Name' ? '' : name);
   const defaultBio = profile.bio === 'Write a bio here to introduce yourself to other Paw Trails users...' ? '' : profile.bio;
 
   const [profileImage, setProfileImage] = useState(profile.profileImage || null);
@@ -32,16 +32,7 @@ export default function EditProfileScreen() {
     }
   };
 
-  useEffect(() => {
-    console.log('Profile data in EditProfileScreen:', profile);
-  }, [profile]);
-
   const handleSave = () => {
-    const newProfile = { profileImage, userName, dogNames, bio };
-    console.log('Saving new profile:', newProfile);
-    setProfile(newProfile);
-    navigation.navigate('Profile');
-  
     if (!profileImage) {
       Alert.alert('Validation Error', 'Profile image is required.');
       return;
@@ -122,15 +113,17 @@ export default function EditProfileScreen() {
           value={bio}
           onChangeText={setBio}
           multiline
-          placeholder="Write a short bio here..."
+          placeholder="Introduce yourself and your dog(s)!..."
           onFocus={() => setBio('')}
         />
-        <Pressable style={styles.saveButton} onPress={handleSave}>
-          <Text style={styles.buttonText}>Save</Text>
-        </Pressable>
-        <Pressable style={styles.cancelButton} onPress={() => navigation.goBack()}>
-          <Text style={styles.buttonText}>Cancel</Text>
-        </Pressable>
+        <View style={styles.buttonRow}>
+          <Pressable style={styles.saveButton} onPress={handleSave}>
+            <Text style={styles.buttonText}>Save</Text>
+          </Pressable>
+          <Pressable style={styles.cancelButton} onPress={() => navigation.goBack()}>
+            <Text style={styles.buttonText}>Cancel</Text>
+          </Pressable>
+        </View>
       </View>
     </ScrollView>
   );
@@ -199,18 +192,26 @@ const styles = StyleSheet.create({
   bioInput: {
     textAlignVertical: 'top',
     height: 100,
+    marginBottom: 5,
+    marginTop: 20,
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '85%',
+    marginTop: 20,
   },
   saveButton: {
     backgroundColor: '#623b1d',
-    paddingHorizontal: 20,
     paddingVertical: 10,
+    paddingHorizontal: 20,
     borderRadius: 5,
-    marginBottom: 20,
+    marginRight: 10,
   },
   cancelButton: {
     backgroundColor: '#623b1d',
-    paddingHorizontal: 20,
     paddingVertical: 10,
+    paddingHorizontal: 20,
     borderRadius: 5,
   },
   buttonText: {
