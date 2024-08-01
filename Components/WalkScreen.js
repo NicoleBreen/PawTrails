@@ -14,90 +14,98 @@ export default function WalkScreen() {
   const [startTime, setStartTime] = useState(null);
   const [distance, setDistance] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [isWalking, setIsWalking] = useState(false); // Track if the walk is active
 
   const watchId = useRef(null);
   const navigation = useNavigation();
   const maxRetryAttempts = 3;
 
   useEffect(() => {
-    const initializeLocation = async (attempt = 1) => {
+    const requestPermissions = async () => {
       try {
-        // Request permission to use location services
         let { status } = await Location.requestForegroundPermissionsAsync();
+        console.log('Permission status:', status); // Log the permission status
         if (status !== 'granted') {
           setErrorMsg('Permission to access location was denied');
-          return;
-        }
-
-        // Get the current position of the user
-        let currentLocation = await Location.getCurrentPositionAsync({});
-        const { latitude, longitude } = currentLocation.coords;
-
-        // Latitude and Logitude extracted from current position
-        // Used to set the initial region for the map and current location
-        setInitialRegion({
-          latitude,
-          longitude,
-          latitudeDelta: 0.01,
-          longitudeDelta: 0.01,
-        });
-        setLocation({ latitude, longitude });
-        
-        // Reverse geocode to get address of current location
-        const addressResponse = await Location.reverseGeocodeAsync({ latitude, longitude });
-        setAddress(addressResponse[0]);
-        
-        // Set the start time for the walk
-        // For My Walks screen logging puposes
-        setStartTime(new Date());
-        
-        // Watch the position and update the location and route
-        watchId.current = await Location.watchPositionAsync(
-          {
-            accuracy: Location.Accuracy.High,
-            timeInterval: 1000,
-            distanceInterval: 1,
-          },
-          async (newLocation) => {
-            const { latitude, longitude } = newLocation.coords;
-            if (location) {
-              const distanceIncrement = getDistance(location, { latitude, longitude });
-              setDistance(prevDistance => prevDistance + distanceIncrement);
-            }
-
-            // Update current location and route with new location
-            setLocation({ latitude, longitude });
-            setRoute((prevRoute) => [...prevRoute, { latitude, longitude }]);
-
-            try {
-              // Reverse geocode for address of new location 
-              const addressResponse = await Location.reverseGeocodeAsync({ latitude, longitude });
-              setAddress(addressResponse[0]);
-            } catch (error) {
-              console.error('Error during reverse geocoding:', error);
-            }
-          }
-        );
-      } catch (error) {
-        console.error('Error initializing location:', error);
-        // Retry initialisation if it fails to max number of attempts
-        if (attempt < maxRetryAttempts) {
-          setTimeout(() => initializeLocation(attempt + 1), 2000);
         } else {
-          setErrorMsg('Failed to initialize location after multiple attempts. Please try again later.');
+          initializeLocation();
         }
+      } catch (error) {
+        console.error('Error requesting location permissions:', error);
+        setErrorMsg('Failed to request location permissions. Please try again later.');
       }
     };
 
-    initializeLocation();
-    
-    // Cleanup function to remove the location watcher when finished
-    return () => {
-      if (watchId.current) {
-        watchId.current.remove();
+    requestPermissions();
+  }, []);
+
+  const initializeLocation = async (attempt = 1) => {
+    try {
+      console.log('Initializing location...');
+      let currentLocation = await Location.getCurrentPositionAsync({});
+      const { latitude, longitude } = currentLocation.coords;
+
+      console.log('Current location:', currentLocation);
+
+      setInitialRegion({
+        latitude,
+        longitude,
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01,
+      });
+      setLocation({ latitude, longitude });
+
+      const addressResponse = await Location.reverseGeocodeAsync({ latitude, longitude });
+      setAddress(addressResponse[0]);
+      console.log('Initial address:', addressResponse[0]);
+    } catch (error) {
+      console.error('Error initializing location:', error);
+      if (attempt < maxRetryAttempts) {
+        setTimeout(() => initializeLocation(attempt + 1), 2000);
+      } else {
+        setErrorMsg('Failed to initialize location after multiple attempts. Please try again later.');
       }
-    };
-  }, [location]);
+    }
+  };
+
+  const startWalk = async () => {
+    if (!initialRegion) {
+      Alert.alert('Waiting', 'Still loading location. Please wait.');
+      return;
+    }
+
+    console.log('Starting walk...');
+    Alert.alert('Walk Started', 'Your walk has started.');
+    setIsWalking(true);
+    setStartTime(new Date());
+    setRoute([]);
+    setDistance(0);
+
+    watchId.current = await Location.watchPositionAsync(
+      {
+        accuracy: Location.Accuracy.High,
+        timeInterval: 1000,
+        distanceInterval: 1,
+      },
+      async (newLocation) => {
+        const { latitude, longitude } = newLocation.coords;
+        if (location) {
+          const distanceIncrement = getDistance(location, { latitude, longitude });
+          setDistance((prevDistance) => prevDistance + distanceIncrement);
+        }
+
+        setLocation({ latitude, longitude });
+        setRoute((prevRoute) => [...prevRoute, { latitude, longitude }]);
+
+        try {
+          const addressResponse = await Location.reverseGeocodeAsync({ latitude, longitude });
+          setAddress(addressResponse[0]);
+        } catch (error) {
+          console.error('Error during reverse geocoding:', error);
+        }
+      }
+    );
+  };
 
   const getDistance = (loc1, loc2) => {
     const toRad = (value) => (value * Math.PI) / 180;
@@ -118,6 +126,7 @@ export default function WalkScreen() {
   };
 
   const stopWalk = async () => {
+    console.log('Stopping walk...');
     setIsLoading(true); // Start loading
     try {
       if (watchId.current) {
@@ -152,6 +161,7 @@ export default function WalkScreen() {
       ]);
     } finally {
       setIsLoading(false); // End loading
+      setIsWalking(false); // End walking
     }
   };
 
@@ -164,8 +174,10 @@ export default function WalkScreen() {
       address.street,
       address.city || address.subregion,
       address.region,
-      address.country
-    ].filter(part => part).join(', ');
+      address.country,
+    ]
+      .filter((part) => part)
+      .join(', ');
   } else if (location) {
     text = `Current location: ${JSON.stringify(location)}`;
   }
@@ -191,9 +203,14 @@ export default function WalkScreen() {
         {isLoading ? (
           <ActivityIndicator size="large" color="#0000ff" />
         ) : (
-          <Pressable style={styles.stopButton} onPress={stopWalk}>
-            <Text style={styles.buttonText}>Stop Walk</Text>
-          </Pressable>
+          <View style={styles.buttonRow}>
+            <Pressable style={styles.startButton} onPress={startWalk} disabled={isWalking}>
+              <Text style={styles.buttonText}>Start Walk</Text>
+            </Pressable>
+            <Pressable style={styles.stopButton} onPress={stopWalk} disabled={!isWalking}>
+              <Text style={styles.buttonText}>Stop Walk</Text>
+            </Pressable>
+          </View>
         )}
       </View>
     </View>
@@ -223,6 +240,16 @@ const styles = StyleSheet.create({
     left: 10,
     right: 10,
     alignItems: 'center',
+  },
+  buttonRow: {
+    flexDirection: 'row',
+  },
+  startButton: {
+    backgroundColor: '#623b1d',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    marginRight: 10,
   },
   stopButton: {
     backgroundColor: '#623b1d',
