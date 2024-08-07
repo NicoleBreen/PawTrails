@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
@@ -16,7 +17,6 @@ import { ProfileProvider } from './Components/ProfileContext';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-// Bottom tab navigator with four tabs for Profile, Walk, My Walks, and Badges
 function MainTabNavigator() {
   return (
     <Tab.Navigator
@@ -72,6 +72,11 @@ export default function App() {
           <Stack.Screen
             name="EditProfile"
             component={EditProfileScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Profile"
+            component={ProfileScreen}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

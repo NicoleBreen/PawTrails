@@ -9,9 +9,9 @@ export const ProfileProvider = ({ children }) => {
   const [profile, setProfile] = useState({
     profileImage: require('../assets/profile_pic.png'),
     userName: 'Username',
-    dogNames: ['Dog name 1', 'Dog name 2'],
+    dogNames: ['Dog name'],
     bio: 'Write a bio here to introduce yourself to other Paw Trails users...',
-    photos: [], // Ensure this is an empty array initially
+    photos: [], // Ensure an empty array initially
   });
 
   const updateProfile = (newProfile) => {

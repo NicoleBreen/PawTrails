@@ -18,6 +18,7 @@ export default function EditProfileScreen() {
   const [userName, setUserName] = useState(defaultUserName);
   const [dogNames, setDogNames] = useState(defaultDogNames.length ? defaultDogNames : ['']);
   const [bio, setBio] = useState(defaultBio);
+  const [error, setError] = useState('');
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -33,31 +34,32 @@ export default function EditProfileScreen() {
   };
 
   const handleSave = () => {
-    if (!profileImage) {
-      Alert.alert('Validation Error', 'Profile image is required.');
-      return;
-    }
+    console.log('handleSave called');
     if (!userName.trim()) {
-      Alert.alert('Validation Error', 'User name is required.');
+      setError('Validation Error: User name is required.');
+      console.log('Error set: User name is required');
       return;
     }
     for (const dogName of dogNames) {
       if (!dogName.trim()) {
-        Alert.alert('Validation Error', 'Input at least one dog name.');
+        setError('Validation Error: Input at least one dog name.');
+        console.log('Error set: Input at least one dog name');
         return;
       }
     }
     if (!bio.trim()) {
-      Alert.alert('Validation Error', 'Bio is required.');
+      setError('Validation Error: Bio is required.');
+      console.log('Error set: Bio is required');
       return;
     }
     setProfile({ profileImage, userName, dogNames, bio });
-    Alert.alert('Profile Saved', 'Your profile has been updated successfully.'); // Alert the user
+    console.log('Profile set:', { profileImage, userName, dogNames, bio });
     navigation.navigate('Profile');
+    console.log('Navigation to Profile screen should have been called');
   };
 
   const handleCancel = () => {
-    Alert.alert('Changes Discarded', 'Your changes have been discarded.'); // Alert the user
+    Alert.alert('Changes Discarded', 'Your changes have been discarded.');
     navigation.goBack();
   };
 
@@ -77,7 +79,9 @@ export default function EditProfileScreen() {
         <Image source={logo} style={styles.logo} accessibilityLabel="App logo" />
         <Pressable onPress={pickImage} accessibilityLabel="Change profile picture" accessibilityRole="button">
           <Image source={profileImage} style={styles.profileImage} />
+          <Text style={styles.changePictureText}>Change profile picture</Text>
         </Pressable>
+        {error ? <Text style={styles.errorText}>{error}</Text> : null}
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
@@ -163,7 +167,16 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 50,
+    marginBottom: 10,
+  },
+  changePictureText: {
+    textAlign: 'center',
+    color: 'black',
     marginBottom: 20,
+  },
+  errorText: {
+    color: 'red',
+    marginBottom: 10,
   },
   inputContainer: {
     width: '85%',
