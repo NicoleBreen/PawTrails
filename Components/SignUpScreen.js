@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, Pressable, TextInput, Dimensions, Alert } from 'react-native';
+import { StyleSheet, Text, View, Image, Pressable, TextInput, Dimensions, Alert, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 // adjusts size of view based on the device's screen width
@@ -45,50 +45,95 @@ export default function SignUpScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.content}>
-        <Image source={require('../assets/logo_PT.png')} style={styles.image} resizeMode="contain" />
-        <Text style={styles.title}>Sign Up!</Text>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-            autoCapitalize="none"
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+    >
+      <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
+        <View style={styles.content}>
+          <Image 
+            source={require('../assets/logo_PT.png')} 
+            style={styles.image} 
+            resizeMode="contain" 
+            accessible={true} 
+            accessibilityLabel="App logo" 
           />
-          <TextInput
-            style={styles.input}
-            placeholder="Password"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-            autoCapitalize="none"
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Confirm Password"
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
-            secureTextEntry
-            autoCapitalize="none"
-          />
+          <Text style={styles.title}>Sign Up!</Text>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Email"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              accessible={true}
+              accessibilityLabel="Email input"
+              accessibilityHint="Enter your email address"
+              returnKeyType="next"
+              onSubmitEditing={() => {
+                this.passwordInput.focus();
+              }}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Password"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+              autoCapitalize="none"
+              accessible={true}
+              accessibilityLabel="Password input"
+              accessibilityHint="Enter your password"
+              ref={(input) => { this.passwordInput = input; }}
+              returnKeyType="next"
+              onSubmitEditing={() => {
+                this.confirmPasswordInput.focus();
+              }}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Confirm Password"
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+              secureTextEntry
+              autoCapitalize="none"
+              accessible={true}
+              accessibilityLabel="Confirm password input"
+              accessibilityHint="Re-enter your password to confirm"
+              ref={(input) => { this.confirmPasswordInput = input; }}
+              returnKeyType="done"
+            />
+          </View>
+          {error ? <Text style={styles.errorText}>{error}</Text> : null}
         </View>
-        {error ? <Text style={styles.errorText}>{error}</Text> : null}
-      </View>
-      <View style={styles.bottomContainer}>
-        <Pressable style={styles.button} onPress={handleSignUp}>
-          <Text style={styles.buttonText}>Sign Up</Text>
-        </Pressable>
-        <Text style={styles.signInText}>
-          Already have an account?{' '}
-          <Text style={styles.signInLink} onPress={() => navigation.navigate('Login')}>
-            Sign in!
+        <View style={styles.bottomContainer}>
+          <Pressable 
+            style={styles.button} 
+            onPress={handleSignUp} 
+            accessible={true} 
+            accessibilityLabel="Sign Up button" 
+            accessibilityHint="Tap to sign up"
+            accessibilityRole="button"
+          >
+            <Text style={styles.buttonText}>Sign Up</Text>
+          </Pressable>
+          <Text style={styles.signInText}>
+            Already have an account?{' '}
+            <Text 
+              style={styles.signInLink} 
+              onPress={() => navigation.navigate('Login')}
+              accessible={true}
+              accessibilityLabel="Sign in link"
+              accessibilityHint="Tap to sign in"
+              accessibilityRole="link"
+            >
+              Sign in!
+            </Text>
           </Text>
-        </Text>
-      </View>
-    </View>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -96,21 +141,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ccb7a4', // Light brown background
-    alignItems: 'center',
+  },
+  scrollContainer: {
+    flexGrow: 1,
     justifyContent: 'center',
-    paddingHorizontal: 20,
+    alignItems: 'center',
   },
   content: {
-    flex: 1,
     alignItems: 'center',
-    justifyContent: 'flex-start', 
+    justifyContent: 'flex-start',
     width: '100%',
-    maxWidth: 400, 
-    marginTop: 20, 
+    maxWidth: 400,
+    marginTop: 20,
   },
   image: {
-    width: screenWidth * 0.8, 
-    height: screenWidth * 0.8, 
+    width: screenWidth * 0.8,
+    height: screenWidth * 0.8,
     marginBottom: 20,
   },
   title: {
@@ -142,7 +188,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 10,
     alignItems: 'center',
-    width: '100%', 
+    width: '100%',
   },
   buttonText: {
     fontSize: 18,
@@ -150,16 +196,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   bottomContainer: {
-    position: 'absolute',
-    bottom: 20, 
-    width: '100%',
     alignItems: 'center',
-    justifyContent: 'center',
+    width: '100%',
+    paddingHorizontal: 20,
+    paddingVertical: 20,
   },
   signInText: {
     fontSize: 16,
     color: '#1D2E57',
-    marginBottom: 20,
   },
   signInLink: {
     color: '#1D2E57',

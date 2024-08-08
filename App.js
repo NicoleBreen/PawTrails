@@ -39,6 +39,7 @@ function MainTabNavigator() {
               break;
             default:
               iconName = 'circle';
+              break;
           }
 
           return <Ionicons name={iconName} size={size} color={color} />;
@@ -55,6 +56,7 @@ function MainTabNavigator() {
   );
 }
 
+// Stack navigator sets LoginScreen as home (initial route)
 export default function App() {
   return (
     <ProfileProvider>
