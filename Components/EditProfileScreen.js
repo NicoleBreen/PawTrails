@@ -10,6 +10,7 @@ export default function EditProfileScreen() {
   const navigation = useNavigation();
   const { profile, setProfile } = useContext(ProfileContext);
 
+  // Initialize state variables
   const defaultUserName = profile.userName === 'Add User Name' ? '' : profile.userName;
   const defaultDogNames = profile.dogNames.map(name => name === 'Add Dog Name' ? '' : name);
   const defaultBio = profile.bio === 'Write a bio here to introduce yourself to other Paw Trails users...' ? '' : profile.bio;
@@ -20,6 +21,9 @@ export default function EditProfileScreen() {
   const [bio, setBio] = useState(defaultBio);
   const [error, setError] = useState('');
 
+  /**
+   * Pick an image from the image library and set it as the profile image
+   */
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -33,40 +37,48 @@ export default function EditProfileScreen() {
     }
   };
 
+  /**
+   * Handle the save action, including validation and updating the profile context
+   */
   const handleSave = () => {
-    console.log('handleSave called');
     if (!userName.trim()) {
       setError('Validation Error: User name is required.');
-      console.log('Error set: User name is required');
       return;
     }
     for (const dogName of dogNames) {
       if (!dogName.trim()) {
         setError('Validation Error: Input at least one dog name.');
-        console.log('Error set: Input at least one dog name');
         return;
       }
     }
     if (!bio.trim()) {
       setError('Validation Error: Bio is required.');
-      console.log('Error set: Bio is required');
       return;
     }
     setProfile({ profileImage, userName, dogNames, bio });
-    console.log('Profile set:', { profileImage, userName, dogNames, bio });
     navigation.navigate('Profile');
-    console.log('Navigation to Profile screen should have been called');
   };
 
+  /**
+   * Handle the cancel action, displaying an alert and navigating back
+   */
   const handleCancel = () => {
     Alert.alert('Changes Discarded', 'Your changes have been discarded.');
     navigation.goBack();
   };
 
+  /**
+   * Add an empty dog name input field
+   */
   const addDogName = () => {
     setDogNames([...dogNames, '']);
   };
 
+  /**
+   * Remove a dog name input field by its index
+   * 
+   * @param {number} index - The index of the dog name to remove
+   */
   const removeDogName = (index) => {
     const newDogNames = [...dogNames];
     newDogNames.splice(index, 1);
@@ -88,6 +100,8 @@ export default function EditProfileScreen() {
             value={userName}
             onChangeText={setUserName}
             placeholder="User Name"
+            accessibilityLabel="User Name"
+            accessibilityHint="Enter your user name"
             onFocus={() => setUserName('')}
           />
         </View>
@@ -118,7 +132,10 @@ export default function EditProfileScreen() {
           </View>
         ))}
         <View style={styles.inputContainer}>
-          <Pressable style={styles.addButton} onPress={addDogName}>
+          <Pressable style={styles.addButton} onPress={addDogName}
+            accessibilityLabel="Add Dog Name"
+            accessibilityHint="Add a new dog name input field"
+            accessibilityRole="button">
             <Text style={styles.buttonText}>Add Dog</Text>
           </Pressable>
         </View>
@@ -133,7 +150,7 @@ export default function EditProfileScreen() {
           onFocus={() => setBio('')}
         />
         <View style={styles.buttonRow}>
-          <Pressable style={styles.saveButton} onPress={handleSave}>
+          <Pressable style={styles.saveButton} onPress={handleSave} accessibilityLabel="Save" accessibilityRole="button">
             <Text style={styles.buttonText}>Save</Text>
           </Pressable>
           <Pressable style={styles.cancelButton} onPress={handleCancel} accessibilityLabel="Cancel" accessibilityRole="button">
