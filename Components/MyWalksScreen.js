@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, FlatList, ActivityIndicator, Image } from 'react-native'; // Ensure Image is imported
+import { StyleSheet, View, Text, FlatList, ActivityIndicator, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import logo from '../assets/logo_long.png'; // Import the logo image
+import logo from '../assets/logo_long.png';
 
 export default function MyWalksScreen() {
   const [walks, setWalks] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
-  
+
   useEffect(() => {
     const fetchWalks = async () => {
       try {
@@ -24,11 +24,21 @@ export default function MyWalksScreen() {
     fetchWalks();
   }, []);
 
+  /**
+   * Format date into a human-readable string.
+   * @param {string} dateString - The date string to format.
+   * @returns {string} - The formatted date string.
+   */
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
+  /**
+   * Format time from seconds into a human-readable string.
+   * @param {number} seconds - The time in seconds to format.
+   * @returns {string} - The formatted time string.
+   */
   const formatTime = (seconds) => {
     const h = Math.floor(seconds / 3600);
     const m = Math.floor((seconds % 3600) / 60);
@@ -39,7 +49,7 @@ export default function MyWalksScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
-        <Image source={logo} style={styles.logo} />
+        <Image source={logo} style={styles.logo} accessible={true} accessibilityLabel="App logo" />
       </View>
       <Text style={styles.title}>My Walks</Text>
       {isLoading ? (
