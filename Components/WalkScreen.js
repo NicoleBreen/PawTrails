@@ -39,6 +39,12 @@ export default function WalkScreen() {
     requestPermissions();
   }, []);
 
+  /**
+   * Initialize the user's location and set the initial region for the map.
+   * Retry up to maxRetryAttempts if the initialization fails.
+   * 
+   * @param {number} attempt - The current attempt number for initializing the location.
+   */
   const initializeLocation = async (attempt = 1) => {
     try {
       console.log('Initializing location...');
@@ -68,6 +74,9 @@ export default function WalkScreen() {
     }
   };
 
+  /**
+   * Start tracking the user's walk, updating the location and route in real-time.
+   */
   const startWalk = async () => {
     if (!initialRegion) {
       Alert.alert('Waiting', 'Still loading location. Please wait.');
@@ -107,6 +116,13 @@ export default function WalkScreen() {
     );
   };
 
+  /**
+   * Calculate the distance between two locations using the Haversine formula.
+   * 
+   * @param {object} loc1 - The first location object with latitude and longitude.
+   * @param {object} loc2 - The second location object with latitude and longitude.
+   * @returns {number} The distance between the two locations in meters.
+   */
   const getDistance = (loc1, loc2) => {
     const toRad = (value) => (value * Math.PI) / 180;
     const R = 6371e3; // Earth radius in meters
@@ -125,6 +141,9 @@ export default function WalkScreen() {
     return R * c;
   };
 
+  /**
+   * Stop tracking the user's walk, save the walk data, and navigate to the My Walks screen.
+   */
   const stopWalk = async () => {
     console.log('Stopping walk...');
     setIsLoading(true); // Start loading
@@ -204,10 +223,24 @@ export default function WalkScreen() {
           <ActivityIndicator size="large" color="#0000ff" />
         ) : (
           <View style={styles.buttonRow}>
-            <Pressable style={styles.startButton} onPress={startWalk} disabled={isWalking}>
+            <Pressable 
+              style={styles.startButton} 
+              onPress={startWalk} 
+              disabled={isWalking}
+              accessibilityLabel="Start Walk"
+              accessibilityHint="Start tracking your walk"
+              accessibilityRole="button"
+            >
               <Text style={styles.buttonText}>Start Walk</Text>
             </Pressable>
-            <Pressable style={styles.stopButton} onPress={stopWalk} disabled={!isWalking}>
+            <Pressable 
+              style={styles.stopButton} 
+              onPress={stopWalk} 
+              disabled={!isWalking}
+              accessibilityLabel="Stop Walk"
+              accessibilityHint="Stop tracking your walk"
+              accessibilityRole="button"
+            >
               <Text style={styles.buttonText}>Stop Walk</Text>
             </Pressable>
           </View>
