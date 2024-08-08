@@ -24,14 +24,21 @@ function MainTabNavigator() {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
-          if (route.name === 'Profile') {
-            iconName = focused ? 'person' : 'person-outline';
-          } else if (route.name === 'Walk') {
-            iconName = focused ? 'walk' : 'walk-outline';
-          } else if (route.name === 'My Walks') {
-            iconName = focused ? 'list' : 'list-outline';
-          } else if (route.name === 'Badges') {
-            iconName = focused ? 'ribbon' : 'ribbon-outline';
+          switch (route.name) {
+            case 'Profile':
+              iconName = focused ? 'person' : 'person-outline';
+              break;
+            case 'Walk':
+              iconName = focused ? 'walk' : 'walk-outline';
+              break;
+            case 'My Walks':
+              iconName = focused ? 'list' : 'list-outline';
+              break;
+            case 'Badges':
+              iconName = focused ? 'ribbon' : 'ribbon-outline';
+              break;
+            default:
+              iconName = 'circle';
           }
 
           return <Ionicons name={iconName} size={size} color={color} />;
@@ -48,7 +55,6 @@ function MainTabNavigator() {
   );
 }
 
-// Stack navigator sets LoginScreen as home (initial route)
 export default function App() {
   return (
     <ProfileProvider>
@@ -72,11 +78,6 @@ export default function App() {
           <Stack.Screen
             name="EditProfile"
             component={EditProfileScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Profile"
-            component={ProfileScreen}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>
