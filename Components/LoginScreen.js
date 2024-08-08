@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, Pressable, TextInput, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Image, Pressable, TextInput, Dimensions, KeyboardAvoidingView, Platform, ScrollView, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 // adjusts size of view based on the device's screen width
@@ -11,45 +11,91 @@ export default function LoginScreen() {
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    // Navigate to the 'Profile' screen within the 'MainTabs' navigator
-    navigation.navigate('MainTabs', { screen: 'Profile' });
+    if (email === '' || password === '') {
+      Alert.alert('Error', 'Please fill in both email and password.');
+      return;
+    }
+
+    // Simulate login check
+    if (email && password) {
+      // Show success alert
+      Alert.alert('Success', 'Successfully logged in!', [
+        {
+          text: 'OK',
+          onPress: () => navigation.navigate('MainTabs', { screen: 'Profile' }),
+        },
+      ]);
+    } else {
+      Alert.alert('Error', 'Invalid email or password.');
+    }
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.content}>
-        <Image source={require('../assets/logo_PT.png')} style={styles.image} resizeMode="contain" />
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-            autoCapitalize="none"
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+    >
+      <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
+        <View style={styles.content}>
+          <Image 
+            source={require('../assets/logo_PT.png')} 
+            style={styles.image} 
+            resizeMode="contain" 
+            accessible={true} 
+            accessibilityLabel="App logo" 
           />
-          <TextInput
-            style={styles.input}
-            placeholder="Password"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-            autoCapitalize="none"
-          />
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Email"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              accessible={true}
+              accessibilityLabel="Email input"
+              accessibilityHint="Enter your email address"
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Password"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+              autoCapitalize="none"
+              accessible={true}
+              accessibilityLabel="Password input"
+              accessibilityHint="Enter your password"
+            />
+          </View>
         </View>
-      </View>
-      <View style={styles.bottomContainer}>
-        <Pressable style={styles.button} onPress={handleLogin}>
-          <Text style={styles.buttonText}>Login</Text>
-        </Pressable>  
-        <Text style={styles.signUpText}>
-          Don't have an account?{' '}
-          <Text style={styles.signUpLink} onPress={() => navigation.navigate('SignUp')}>
-            Sign up!
+        <View style={styles.bottomContainer}>
+          <Pressable 
+            style={styles.button} 
+            onPress={handleLogin} 
+            accessible={true} 
+            accessibilityLabel="Login button" 
+            accessibilityHint="Tap to log in"
+            accessibilityRole="button"
+          >
+            <Text style={styles.buttonText}>Login</Text>
+          </Pressable>  
+          <Text style={styles.signUpText}>
+            Don't have an account?{' '}
+            <Text 
+              style={styles.signUpLink} 
+              onPress={() => navigation.navigate('SignUp')}
+              accessible={true}
+              accessibilityLabel="Sign up link"
+              accessibilityHint="Tap to sign up"
+              accessibilityRole="link"
+            >
+              Sign up!
+            </Text>
           </Text>
-        </Text>
-      </View>
-    </View>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }  
 
@@ -57,12 +103,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ccb7a4', // Light brown background
-    alignItems: 'center',
+  },
+  scrollContainer: {
+    flexGrow: 1,
     justifyContent: 'center',
-    paddingHorizontal: 20,
+    alignItems: 'center',
   },
   content: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
@@ -101,16 +148,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   bottomContainer: {
-    position: 'absolute',
-    bottom: 20, 
-    width: '100%',
     alignItems: 'center',
-    justifyContent: 'center',
+    width: '100%',
+    paddingHorizontal: 20,
+    paddingVertical: 20,
   },
   signUpText: {
     fontSize: 16,
     color: '#1D2E57',
-    marginBottom: 20,
   },
   signUpLink: {
     color: '#1D2E57',
