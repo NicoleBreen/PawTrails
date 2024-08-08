@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { StyleSheet, View, Text, Image, ScrollView, Pressable, Alert } from 'react-native';
+import { StyleSheet, View, Text, Image, ScrollView, Pressable, Alert, AccessibilityInfo } from 'react-native';
 import { ProfileContext } from './ProfileContext';
 import { useNavigation } from '@react-navigation/native';
 import logo from '../assets/logo_long.png';
@@ -31,6 +31,8 @@ export default function ProfileScreen() {
       setLocalPhotos(updatedPhotos); // Update local state
       setProfile({ ...profile, photos: updatedPhotos }); // Update context state
       Alert.alert('Image Added', 'The image has been successfully added to your profile.');
+      // Focus management
+      AccessibilityInfo.announceForAccessibility('Image successfully added.');
     } else {
       Alert.alert('Unable to Load Image', 'No image was selected.');
     }
@@ -44,7 +46,7 @@ export default function ProfileScreen() {
 
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+      <ScrollView contentContainerStyle={styles.scrollViewContent} keyboardShouldPersistTaps="handled" accessible={true} accessibilityLabel="Profile screen" accessibilityHint="Scroll to view your profile details">
         <View style={styles.content}>
           <Image source={logo} style={styles.logo} accessibilityLabel="App logo" /> 
           <View style={styles.centeredContent}>
@@ -89,12 +91,14 @@ export default function ProfileScreen() {
       <View style={styles.buttonContainer}>
         <Pressable style={[styles.button, styles.editButton]} onPress={() => navigation.navigate('EditProfile')}
           accessibilityLabel="Edit Profile"
+          accessibilityHint="Navigate to the edit profile screen"
           accessibilityRole="button">
           <Text style={styles.buttonText}>Edit Profile</Text>
         </Pressable>
         <Pressable style={[styles.button, styles.uploadButton]} onPress={pickImage}
-        accessibilityLabel="Upload Image"
-        accessibilityRole="button">
+          accessibilityLabel="Upload Image"
+          accessibilityHint="Open the image picker to upload a new image"
+          accessibilityRole="button">
           <Text style={styles.buttonText}>Upload Image</Text>
         </Pressable>
       </View>
