@@ -16,6 +16,17 @@ export default function ProfileScreen() {
   }, [profile]);
 
   const pickImage = async () => {
+
+     // Request permission to access the media library
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (status !== 'granted') {
+      Alert.alert(
+        'Permission Denied',
+        'Permission to access camera roll is required to select an image.'
+      );
+      return;
+    }
     console.log('Opening image picker...');
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,

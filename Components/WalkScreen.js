@@ -40,7 +40,7 @@ export default function WalkScreen() {
   }, []);
 
   /**
-   * Initialize the user's location and set the initial region for the map.
+   * Initialise the user's location and set the initial region for the map.
    * Retry up to maxRetryAttempts if the initialization fails.
    * 
    * @param {number} attempt - The current attempt number for initializing the location.

@@ -10,7 +10,7 @@ export default function EditProfileScreen() {
   const navigation = useNavigation();
   const { profile, setProfile } = useContext(ProfileContext);
 
-  // Initialize state variables
+  // Initialise state variables
   const defaultUserName = profile.userName === 'Add User Name' ? '' : profile.userName;
   const defaultDogNames = profile.dogNames.map(name => name === 'Add Dog Name' ? '' : name);
   const defaultBio = profile.bio === 'Write a bio here to introduce yourself to other Paw Trails users...' ? '' : profile.bio;

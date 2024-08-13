@@ -6,13 +6,13 @@ export const ProfileContext = createContext();
 // Provider component that wraps the app 
 // and provides profile state and update function
 export const ProfileProvider = ({ children }) => {
-  // Initialize the profile state with default values
+  // Initialise the profile state with default values
   const [profile, setProfile] = useState({
     profileImage: require('../assets/profile_pic.png'), // Default profile image
     userName: 'Username', // Default username
     dogNames: ['Dog name'], // Default dog name
     bio: 'Write a bio here to introduce yourself to other Paw Trails users...', // Default bio
-    photos: [], // Initialize with an empty array for photos
+    photos: [], // Initialise with an empty array for photos
   });
 
   /**
