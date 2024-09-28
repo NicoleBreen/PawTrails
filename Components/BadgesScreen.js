@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
-import logo from '../assets/logo_long.png'; // Import logo image
+import logo from '../assets/logo_long.png';
 
 // Define badge data
 const badges = [
