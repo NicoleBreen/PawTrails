@@ -1,6 +1,6 @@
 # Paw Trails
 
-**Paw Trails** is a mobile app designed to encourage dog walking by tracking distances and awarding badges for achievements. Built with **React Native** and **Expo**, it offers a user-friendly experience with accessible design considerations.
+**Paw Trails** is a mobile app that I designed to encourage dog walking by tracking distances and awarding badges for distance achievements. It was built with **React Native** and **Expo**, offering a user-friendly experience with accessible design considerations.
 
 ## Features
 - **Walk Tracking**: Track distances walked.
