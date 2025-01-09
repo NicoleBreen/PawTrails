@@ -8,16 +8,17 @@
 - **Profile Management**: Customize profiles with pictures and dog names.
 
 ## Screenshots
-### Walk Tracking Screen
-(Start walk has been added since this screenshot)
-
-<img src="docs/walk-emulator.png" alt="Walk Tracking" width="200"/>
 
 ### Profile Screen
 <img src="docs/profile-screen.jpg" alt="Profile Screen" width="200"/>
 
 ### Edited Profile Screen
 <img src="docs/edited-profile-screen.jpg" alt="Edited Profile" width="200"/>
+
+### Walk Tracking Screen
+(Start walk has been added since this screenshot)
+
+<img src="docs/walk-emulator.png" alt="Walk Tracking" width="200"/>
 
 ### Saved Walks
 <img src="docs/saved-walks.jpg" alt="Saved Walks" width="200"/>
