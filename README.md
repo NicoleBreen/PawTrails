@@ -10,19 +10,20 @@
 ## Screenshots
 ### Walk Tracking Screen
 (Start walk has been added since this screenshot)
-![Walk Tracking](docs/walk-emulator.png)
+
+<img src="docs/walk-emulator.png" alt="Walk Tracking" width="200"/>
 
 ### Profile Screen
-![Profile Screen](docs/profile-screen.jpg)
+<img src="docs/profile-screen.jpg" alt="Profile Screen" width="200"/>
 
 ### Edited Profile Screen
-![Edited Profile Screen](docs/edited-profile-screen.jpg)
+<img src="docs/edited-profile-screen.jpg" alt="Edited Profile" width="200"/>
 
 ### Saved Walks
-![Walks Screen](docs/saved-walks.jpg)
+<img src="docs/saved-walks.jpg" alt="Saved Walks" width="200"/>
 
 ### Badges Screen
-![Badges Screen](docs/badges-screen.jpg)
+<img src="docs/badges-screen.jpg" alt="Badges Screen" width="200"/>
 
 ## Installation
 1. Clone the repository:
